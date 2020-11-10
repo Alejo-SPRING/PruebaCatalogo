@@ -1,0 +1,123 @@
+<form class="mt-3 mb-3">
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <input type="number" (keyup)="buscadorChange()" #buscar="ngModel" name="buscar" [(ngModel)]="id"
+                class="form-control" placeholder="Buscar">
+        </div>
+    </div>
+</form>
+<div class="card-columns">
+    <div class="card" *ngFor="let item of productos">
+        <a (click)="open(ver, item.imagen, 'lg')" type="button">
+            <img src="{{item.miniatura}}" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">Nombre: {{item.descripcion}}</h5>
+            <p class="card-text">Cantidad disponible: {{item.cantidadDisponible}}</p>
+            <p class="card-text">Categoria: {{item.categoria}}</p>
+            <p class="card-text">Precio: {{item.precio | number:'1.0-3'}}</p>
+            <button type="button" (click)="open(radicar, item, 'xl')"
+                class="btn btn-info btn-block rounded-pill mt-3">Radicar pedido</button>
+        </div>
+    </div>
+</div>
+<ng-template #ver let-modal>
+    <div class="modal-body">
+        <button type="button" class="close" (click)="modal.close()"><i
+                class="fa fa-times-circle text-secondary"></i></button>
+        <img src="{{ruta}}" alt="" class="img-fluid">
+    </div>
+</ng-template>
+<ng-template #radicar let-modal>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img src="assets/ilustraciones/comprar.svg" alt="imagen" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-6">
+                <button type="button" class="close" (click)="modal.close()"><i
+                        class="fa fa-times-circle text-secondary"></i></button>
+                <p class="display-4">Radicar pedido</p>
+                <hr>
+                <form #crearF="ngForm">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" class="form-control rounded-pill" #cantidad="ngModel" placeholder="Cantidad" name="cantidad" [(ngModel)]="cantidadP" required [class.is-valid]="!cantidad.invalid && (cantidad.touched || cantidad.dirty)" [class.is-invalid]="cantidad.invalid && (cantidad.touched || cantidad.dirty)" id="cantidad">
+                            <div *ngIf="cantidad.invalid && (cantidad.dirty || cantidad.touched)">
+                                <div *ngIf="cantidad.errors.required">
+                                    <p class="text-danger">
+                                        ¡Ingresa una cantidad!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control rounded-pill" #nombre="ngModel" name="nombre" [(ngModel)]="factura.nombre" required [class.is-valid]="!nombre.invalid && (nombre.touched || nombre.dirty)" [class.is-invalid]="nombre.invalid && (nombre.touched || nombre.dirty)" placeholder="Nombre" id="nombre">
+                            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                                <div *ngIf="nombre.errors.required">
+                                    <p class="text-danger">
+                                        ¡Ingresa un nombre!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="fechaN">Fecha de nacimiento</label>
+                            <input type="date" class="form-control rounded-pill" id="fechaN" #fechaN="ngModel" name="fechaN" [(ngModel)]="factura.fechaNacimiento" required [class.is-valid]="!fechaN.invalid && (fechaN.touched || fechaN.dirty)" [class.is-invalid]="fechaN.invalid && (fechaN.touched || fechaN.dirty)">
+                            <div *ngIf="fechaN.invalid && (fechaN.dirty || fechaN.touched)">
+                                <div *ngIf="fechaN.errors.required">
+                                    <p class="text-danger">
+                                        ¡Ingresa una fecha de nacimiento!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="direccion">Dirección</label>
+                            <textarea id="direccion" class="form-control" placeholder="Dirección" #direccion="ngModel" name="direccion" [(ngModel)]="factura.direccion" required [class.is-valid]="!direccion.invalid && (direccion.touched || direccion.dirty)" [class.is-invalid]="direccion.invalid && (direccion.touched || direccion.dirty)"></textarea>
+                            <div *ngIf="direccion.invalid && (direccion.dirty || direccion.touched)">
+                                <div *ngIf="direccion.errors.required">
+                                    <p class="text-danger">
+                                        ¡Ingresa una fecha de nacimiento!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="ciudad">Ciudad</label>
+                            <select id="ciudad" class="custom-select rounded-pill" #ciudad="ngModel" name="ciudad" [(ngModel)]="factura.ciudad" required [class.is-valid]="!ciudad.invalid && (ciudad.touched || ciudad.dirty)" [class.is-invalid]="ciudad.invalid && (ciudad.touched || ciudad.dirty)">
+                                <option value="Colombia">Colombia</option>
+                            </select>
+                            <div *ngIf="ciudad.invalid && (ciudad.dirty || ciudad.touched)">
+                                <div *ngIf="ciudad.errors.required">
+                                    <p class="text-danger">
+                                        ¡Selecciona una ciudad!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="ciudad">Cedula</label>
+                            <input type="file" class="form-control rounded-pill" accept="application/pdf" #cedula="ngModel" name="cedula" [(ngModel)]="factura.cedula" required [class.is-valid]="!cedula.invalid && (cedula.touched || cedula.dirty)" [class.is-invalid]="cedula.invalid && (cedula.touched || cedula.dirty)">
+                            <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+                                <div *ngIf="cedula.errors.required">
+                                    <p class="text-danger">
+                                        ¡Selecciona una ciudad!
+                                    </p>
+                                </div>
+                                <div *ngIf="cedula.errors.accept">
+                                    <p class="text-danger">
+                                        ¡Ingresa un documento con formato PDF!
+                                    </p>
+                                </div>
+                            </div>
+                            <button type="button" (click)="crearFactura()" class="btn btn-secondary btn-block mt-3 rounded-pill" [disabled]="crearF.form.invalid">Crear</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
